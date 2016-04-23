@@ -3,6 +3,7 @@ import json
 import os
 import gc
 from os import walk
+import datetime
 from random import randint
 
 base='http://www.filterlady.com/'
@@ -40,6 +41,13 @@ def FetchOrders():
 
 def NewOrder(order):
   try:
+    now = datetime.datetime.now()
+    day1starttime = now.replace(hour=21, minute=30, second=0, microsecond=0)
+    day1endtime = day1starttime + datetime.timedelta(seconds=8999)
+    day2starttime = now.replace(hour=0, minute=0, second=0, microsecond=0)
+    day2endtime = day2starttime + datetime.timedelta(seconds=9000)
+    if not ((now>day1starttime and now<day1endtime) or (now>day2starttime or now<day2endtime)):
+      return 'Order Not Allowed', '{}'
     order = json.loads(order)
     i=1
     for product in order['Products']:
@@ -66,6 +74,7 @@ def NewOrder(order):
     return 'Unable to Place order', '{}'
 
 if __name__ == "__main__":
-  print FetchOrders()
+  print comparedatetime()
+  #print FetchOrders()
   #print OrderUpdation('O_6')
   #print NewOrder('{"Name":"Sahil Sehgal", "Products":[{"product_name":"MALAI KOFTA","Actual_Price": "50", "TMS_Price": "60", "Shop_Name" : "NFS1"}, {"product_name":"Paneer Thaliii","Actual_Price": "50", "TMS_Price": "60", "Shop_Name" : "NFS2"}, {"product_name":"Paneer Thali22","Actual_Price": "50", "TMS_Price": "60", "Shop_Name" : "NFS2"}]}')

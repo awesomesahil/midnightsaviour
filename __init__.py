@@ -1,4 +1,4 @@
-from flask import Flask, session, jsonify
+from flask import Flask, session, jsonify, request
 from flask.ext.cors import CORS
 from flask_mail import Mail, Message
 from database import NewOrder, OrderUpdation, FetchOrders
@@ -11,7 +11,7 @@ app.config['MAIL_SERVER'] = 'smtp.googlemail.com'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USE_SSL'] = True
 app.config['MAIL_USERNAME'] = 'themidnightsaviour'
-app.config['MAIL_PASSWORD'] = 'TENDULKAR'
+app.config['MAIL_PASSWORD'] = 'tmsadmin123'
 
 mail = Mail(app)
 CORS(app)
@@ -21,7 +21,7 @@ def allowed_file(filename):
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
-  print sendmail('sahilsehgal1995@gmail.com', 'Trying hard', 'Trying')
+  #print sendmail('sahilsehgal1995@gmail.com', 'Trying hard', 'Trying')
   return 'TMS'
     #return app.send_static_file("index.html")
 
@@ -50,13 +50,17 @@ def Fetchorders():
 
 @app.route('/api/newOrder/', methods=['GET', 'POST'])
 def neworder():
-  if request.method=='POST':
-    reply, order = NewOrder(request.args.get('Order'))
-    if reply == 'Order Placed':
-      message = 'New order<br>'+ str(order)
-      sendmail('tms@gmail.com',message, 'New order')
-    return reply
-  return 'Invalid Request'
+  try:
+    if request.method=='POST':
+      reply, order = NewOrder(request.args.get('Order'))
+      if reply == 'Order Placed':
+	message = 'New order<br>'+ str(order)
+	sendmail('themidnightsaviour@gmail.com',message, 'New order')
+	sendmail('deliveryboy31@gmail.com',message, 'New order')
+      return reply
+    return 'Invalid Request'
+  except Exception as e:
+    return str(e)
 
 if __name__ == '__main__':
   app.run(host='0.0.0.0')
