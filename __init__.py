@@ -21,7 +21,7 @@ def allowed_file(filename):
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
-  #print sendmail('sahilsehgal1995@gmail.com', 'Trying hard', 'Trying')
+  print sendmail('sahilsehgal1995@gmail.com', 'Trying hard', 'Trying')
   return 'TMS'
     #return app.send_static_file("index.html")
 
