@@ -40,11 +40,13 @@ def FetchOrders():
 def NewOrder(order):
   try:
     now = datetime.datetime.now()
-    starttime = now.replace(hour=21, minute=30, second=0, microsecond=0)
-    endtime = starttime + datetime.timedelta(hours=5)
-    if now<starttime or now>endtime:
-      return 'Order Not Allowed', '{}'
-    return ''
+    endtime = now.replace(hour=21, minute=30, second=0, microsecond=0)
+    starttime = now.replace(hour=2, minute=30, second=0, microsecond=0)
+    print starttime
+    print now 
+    print endtime
+    if now<endtime or now>starttime:
+      return 'Order Not Allowed', '{}' 
     order = json.loads(order)
     i=1
     for product in order['Products']:
